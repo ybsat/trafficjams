@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<title>Traffic Jams</title>
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap&subset=latin-ext" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i&display=swap&subset=latin-ext" rel="stylesheet">
+<link href="/css/layout.css" rel="stylesheet">
+<link href="/css/explorables.css" rel="stylesheet" type="text/css" />
+<link href="/css/animation.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/jquery-ui.css">
+<script type="text/javascript" src="/js/d3.v4.min.js"></script>
+<script type="text/javascript" src="/js/d3-scale-chromatic.v1.min.js"></script>
+<link href="/css/fonts.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+
+<body class="ma0 Roboto bg-washed-blue production">
+
+  <header class="cover">
+    <div class="o-90" style="background:#85B24C">
+      <div class="tc-l pv3 pv4-l ph4-ns ph3 center">
+        <h1 class="f2 f1-l fw1 white-90 mb4">Traffic Jams</h1>
+          <h3 class="fw1 f6 f4-l white-90 measure-wide-l center mt3 mb4">
+            How speed variations, acceleration, and inertia create persistent traffic jams
+          </h3>
+      </div>
+    </div>
+  </header>
+
+
+  <main  role="main">
+    <article class="center pv1 ph3 ph4-l mw10 lh-copy nested-img nested-copy-line-height">
+  	  <section class="center mv2 mb5 pb5 w-80-l w-100 pa0 tj nested-copy-line-height f5-l f7 nested-img black">
+          <p>According to research from Texas A&M, the average American commuter spends 54 hours a year stalled in traffic. Commuters in New York and Los Angeles spend up to a total of three weeks a year stuck in traffic! </p>
+
+          <p>While some traffic jams such as those due to car accidents can be understood, many of us find ourself stuck in a long congestion to find at the end that there is no reasonable explanation for what is going on. No accidents at the end of the jam, and no construction slowing down traffic.
+             So what is it? This interactive article tries to explain a phenomenon behind many of the traffic congestions we experience; what researchers qualify as <a href="https://en.wikipedia.org/wiki/Traffic_wave"><strong>ghost jams</strong></a>.
+             These are spontenously emerging congested segments that move slowly and opposite to  the traffic mainly due to variability in car speeds. This article and the accompanying explorable explations aims to slowly build to an understanding of how those so called phantom traffic jams occur.</p>
+
+          <p>In summary, if 80% of the cars try moving at 55 mph and 20% at 70 mph, everyone might end up going at 45mph on average. Whereas if everyone travelled at about 60 mph no reduction of collective traffic flow occurs.</p>
+
+          <p>Let's build it block by block</p>
+
+          <h3>A simple model; stop and go</h3>
+
+          <p>In this first model, let us get familiar with the interface and build an intuition for how acceleration and inertia affect congestion.</p>
+
+          <p>Press <strong>Start</strong> to start the animation. All 14 cars travel at the same speed of 60 mph. No congestion will occur as all travel at the same speed.</p>
+
+          <p>Now try activating/deactivating the <strong> white circle stop signs</strong>, 2 on the upper lane and 1 on the lower lane. Each car will have to stop for some time at the stop sign before continuing. Quickly we can see that a small congestion occurs behind the car. This is because the rate of arrival of cars behind the stop sign is higher than the departure rate.
+             Try experimenting with the <strong>acceleration</strong> and <strong>inertia</strong> sliders to build an intuition for how they affect the congestion. Inertia commands how quickly a car starts moving when the road ahead clears up. Quickly you will realize the slower the acceleration from a full sign and the higher the inertia the more congstion occurs.
+             Try toggling the <strong>"allow lane change"</strong> button, and observe how lane changing affects the congestion build up.</p>
+
+          <p>To bring back the cars to the initial positions, click on the <strong>reset</strong> button. To return values to their default in the simulation, click on the <strong>default</strong> button.</p>
+
+          <div class="flex flex-wrap  justify-around center">
+              <div class="mw-30 " id="cxpbox_display_1">
+              </div>
+          </div>
+
+          <div class="container">
+            <div class="row">
+              <div class="col-3">
+                <p style="margin-top:25px;margin-left:20px;">
+                  <button type="button" id="run1" onclick="runpause1()">Start</button>
+                  <button type="button" onclick="reset1()">Reset</button>
+                  <button type="button" onclick="default1()">Default</button>
+                </p>
+              </div>
+              <div class="col-3">
+                <p style="margin-top:25px;margin-left:20px;">
+                  <button type="button" id="lanechange1" onclick="laneChange1()">Allow lane change</button>
+                </p>
+              </div>
+              <div class="col-3">
+                <p style="margin-bottom:5px;">
+                  <label for="acc-1">Acceleration</label>
+                </p>
+                <div id="acc-1"></div>
+              </div>
+              <div class="col-3">
+                <p style="margin-bottom:5px;">
+                  <label for="inert-1">Inertia</label>
+                </p>
+                <div id="inert-1"></div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Stop and go; rush hour!</h3>
+
+          <p>Now let us see what happens when we increase the number of cars to 30. The commands are still the same as before.</p>
+
+          <div class="flex flex-wrap  justify-around center">
+              <div class="mw-30 " id="cxpbox_display_2">
+              </div>
+          </div>
+
+          <div class="flex flex-wrap  justify-around center">
+              <div class="mw-30 " id="cxpbox_controls_2">
+              </div>
+          </div>
+
+          <div class="container">
+            <div class="row">
+              <div class="col-3">
+                <p style="margin-top:25px;margin-left:20px;">
+                  <button type="button" id="run2" onclick="runpause2()">Start</button>
+                  <button type="button" onclick="reset2()">Reset</button>
+                  <button type="button" onclick="default2()">Default</button>
+                </p>
+              </div>
+              <div class="col-3">
+                <p style="margin-top:25px;margin-left:20px;">
+                  <button type="button" id="lanechange2" onclick="laneChange2()">Allow lane change</button>
+                </p>
+              </div>
+              <div class="col-3">
+                <p style="margin-bottom:5px;">
+                  <label for="acc-2">Acceleration</label>
+                </p>
+                <div id="acc-2"></div>
+              </div>
+              <div class="col-3">
+                <p style="margin-bottom:5px;">
+                  <label for="inert-2">Inertia</label>
+                </p>
+                <div id="inert-2"></div>
+              </div>
+            </div>
+          </div>
+
+          <p>As it can be observed, with more cars, the likelihood of a longer traffic jams is higher even though all cars travel at the same desired speed. This is rush hour!</p>
+
+          <h3>Adding speed variability</h3>
+
+          <p>Now, with 20 cars total in the system, we have the ability to change the preferred speed of individual cars. The <strong>speed variability</strong> slider allows to control the variability in the speed of indivudal colors. Try playing around with it to see how it affects the traffic. The color of the cars is a scale from white to blue indicating the preferred speed. A white colored car has the lowest speed desirability and a full blue car has the highest speed desirability.</p>
+
+          <p>While we maintain 1 of the stop signs from before, observe how even without adding a stop sign, traffic congestions are likely to occur just because of variability in speed. Fast cars are slowed down by slower cars in front of them. Try to observe how lane changing can affect the build up of congestion.</p>
+
+          <div class="flex flex-wrap  justify-around center">
+              <div class="mw-30 " id="cxpbox_display_3">
+              </div>
+          </div>
+
+          <div class="container">
+            <div class="row">
+              <div class="col-3">
+                <p style="margin-top:25px;margin-left:20px;">
+                  <button type="button" id="run3" onclick="runpause3()">Start</button>
+                  <button type="button" onclick="reset3()">Reset</button>
+                  <button type="button" onclick="default3()">Default</button>
+                </p>
+              </div>
+              <div class="col-3">
+                <p style="margin-top:25px;margin-left:20px;">
+                  <button type="button" id="lanechange3" onclick="laneChange3()">Allow lane change</button>
+                </p>
+              </div>
+              <div class="col-2">
+                <p style="margin-bottom:5px;">
+                  <label for="acc-3">Acceleration</label>
+                </p>
+                <div id="acc-3"></div>
+              </div>
+              <div class="col-2">
+                <p style="margin-bottom:5px;">
+                  <label for="inert-3">Inertia</label>
+                </p>
+                <div id="inert-3"></div>
+              </div>
+              <div class="col-2">
+                <p style="margin-bottom:5px;">
+                  <label for="vvar-3">Speed Variability</label>
+                </p>
+                <div id="vvar-3"></div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Putting it all together</h3>
+
+          <p>Now that we understand how the different parameters all affect congestions and their build ups, let's put it all together with 80 cars traveling on a circular path. The shape of the road is like that to have more space for the cars to travel on and to make more congestions possible and easier to detect. We eliminate stop signs as those are not needed anymore to explain the concept of ghost jams.
+             Observe how with a higher speed variability, traffic congestions are more likely to occur.</p>
+
+          <p>Try to observe this when you increase the speed variability, initially the average speed of cars increase as expcted. But shortly after, first ghost jams appear and the average speed drops significantly.</p>
+
+          <p>Even if you go back to no speed variability after increasing it and jams already occured, the jams persist for a long time.</p>
+
+          <p>Also observe how the tail of the ghost jams travels in the direction opposite to the traffic.</p>
+
+          <div class="flex flex-wrap  justify-around center">
+              <div class="mw-30 " id="cxpbox_display_4">
+              </div>
+          </div>
+
+          <div class="container">
+            <div class="row">
+              <div class="col-3">
+                <p style="margin-top:25px;margin-left:20px;">
+                  <button type="button" id="run4" onclick="runpause4()">Start</button>
+                  <button type="button" onclick="reset4()">Reset</button>
+                  <button type="button" onclick="default4()">Default</button>
+                </p>
+              </div>
+              <div class="col-3">
+                <p style="margin-top:25px;margin-left:20px;">
+                  <button type="button" id="lanechange4" onclick="laneChange4()">Allow lane change</button>
+                </p>
+              </div>
+              <div class="col-2">
+                <p style="margin-bottom:5px;">
+                  <label for="acc-4">Acceleration</label>
+                </p>
+                <div id="acc-4"></div>
+              </div>
+              <div class="col-2">
+                <p style="margin-bottom:5px;">
+                  <label for="inert-4">Inertia</label>
+                </p>
+                <div id="inert-4"></div>
+              </div>
+              <div class="col-2">
+                <p style="margin-bottom:5px;">
+                  <label for="vvar-4">Speed Variability</label>
+                </p>
+                <div id="vvar-4"></div>
+              </div>
+            </div>
+          </div>
+
+          <h4>What's happening behind the scenes</h4>
+
+          <p>Every car tries to accelerate to reach its prefered speed. If a car gets too close to the car in front, it decelerates until a safety distance to avoid a collision. Cars can also switch lanes (if enabled), but only if there is enough space on next lane, that is there are no incoming cars in the rearview mirror.
+             Before a car starts accelerating again, it insures that there is enough distance with the car in front.</p>
+
+          <h3>Conclusion</h3>
+
+          <p>We hope through this explorable explanation, the concept of ghost traffic waves are clear. We aimed to show how speed variability as well as inertia and acceleration greaty affect the emergence of traffic jams on the roads. The next time you face a traffic jam on the road and you don't see an accident or road blocking occured, you know what might have caused it!
+             As drivers, we each have a resonsibility to maintain a constant speed. And while upper limits are enforced, the concept of lower speed limits or constant speeds should maybe be enforced as well as there is great benefits in these!</p>
+
+      </section>
+    </article>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha384-KcyRSlC9FQog/lJsT+QA8AUIFBgnwKM7bxm7/YaX+NTr4D00npYawrX0h+oXI3a2" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha384-JPbtLYL10d/Z1crlc6GGGGM3PavCzzoUJ1UxH0bXHOfguWHQ6XAWrIzW+MBGGXe5" crossorigin="anonymous"></script>
+  <script  src="/js/util.js" ></script>
+  <script  src="/js/animation.js" ></script>
+  <script  src="/js/animation2.js" ></script>
+  <script  src="/js/animation3.js" ></script>
+  <script  src="/js/animation4.js" ></script>
+
+</body>
+
+</html>

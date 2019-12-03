@@ -1,0 +1,8 @@
+
+.explorable_display {
+	border:1px solid black;
+	background:rgb(240,240,240);
+	display: block;
+	margin: auto;
+	margin-bottom: 10px
+}
